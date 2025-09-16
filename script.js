@@ -58,7 +58,6 @@ function renderMap() {
     for (let i = 0; i < line.stations.length - 1; ++i) {
       const s1 = line.stations[i], s2 = line.stations[i+1];
       if (s1.x == null || s1.y == null || s2.x == null || s2.y == null) continue;
-      console.log(s1.x)
       svg.appendChild(lineElement(s1.x, s1.y, s2.x, s2.y, line.color));
     }
   }
@@ -84,6 +83,7 @@ function lineElement(x1, y1, x2, y2, color) {
   l.setAttribute('opacity', 0.92);
   return l;
 }
+
 function stationElement(station) {
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -134,7 +134,12 @@ function showLevelMenu(e, station) {
       stationLevels[station.id] = lvl.value;
       saveLevels();
       updateTotalLevel();
-      renderMap();
+      // Update only the circle color, not the whole map
+      const svg = document.getElementById('metro-svg');
+      const circle = svg.querySelector(`circle[data-id="${station.id}"]`);
+      if (circle) {
+        circle.setAttribute('fill', LEVELS[lvl.value]?.color || LEVELS[0].color);
+      }
       hideLevelMenu();
     };
     levelMenu.appendChild(btn);
