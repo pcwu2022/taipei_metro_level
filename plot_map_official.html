@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Taipei Metro Map Points Plot</title>
+  <style>
+    body { background: #222; color: #eee; }
+    #map {
+      position: relative;
+      width: 1000px;
+      height: 1000px;
+      background: #fff;
+      border: 1px solid #888;
+      margin: 2em auto;
+      overflow: auto;
+    }
+    .point {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #2196f3;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 0 2px #000a;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .point:hover {
+      background: #ff9800;
+      z-index: 2;
+    }
+    .label {
+      position: absolute;
+      left: 16px;
+      top: -2px;
+      font-size: 13px;
+      color: #222;
+      background: #fff8;
+      padding: 1px 4px;
+      border-radius: 3px;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center">Taipei Metro Map Points (map_official.json)</h2>
+  <div id="map"></div>
+  <script>
+    async function loadPoints() {
+      const res = await fetch('map_official.json');
+      const points = await res.json();
+      const map = document.getElementById('map');
+      points.forEach(pt => {
+        const dot = document.createElement('div');
+        dot.className = 'point';
+        dot.style.left = pt.x + 'px';
+        dot.style.top = pt.y + 'px';
+        dot.title = pt.id;
+        // Label
+        const label = document.createElement('div');
+        label.className = 'label';
+        label.textContent = pt.id;
+        dot.appendChild(label);
+        dot.onmouseenter = () => { label.style.display = 'block'; };
+        dot.onmouseleave = () => { label.style.display = 'none'; };
+        label.style.display = 'none';
+        map.appendChild(dot);
+      });
+    }
+    loadPoints();
+  </script>
+</body>
+</html>

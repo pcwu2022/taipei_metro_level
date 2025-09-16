@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taipei Metro Level Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Taipei Metro Level Game</h1>
+    <div id="total-level">Total Level: 0</div>
+  </header>
+  <main>
+    <div class="metro-map">
+      <svg id="metro-svg" viewBox="0 0 650 500"></svg>
+    </div>
+    <div style="text-align:center; color:#888; font-size:0.98em;">
+      <p>Tap a station to set your level!<br>Data is saved automatically.</p>
+    </div>
+  </main>
+  <div id="level-menu" class="level-menu"></div>
+<script src="script.js" type="module"></script>
+</body>
+</html>
