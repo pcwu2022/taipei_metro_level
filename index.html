@@ -8,18 +8,27 @@
 </head>
 <body>
   <header>
-    <h1>Taipei Metro Level Game</h1>
-    <div id="total-level">Total Level: 0</div>
+    <h1>台北捷運駅旅等級</h1>
+    <div id="total-level">總等級：0</div>
   </header>
   <main>
     <div class="metro-map">
+      <div class="level-legend">
+        <span class="legend-item"><span class="color-box" style="background-color:var(--level-0)"></span> 無：從未造訪過此站</span>
+        <span class="legend-item"><span class="color-box" style="background-color:var(--level-1)"></span> 通過：曾經搭乘經過</span>
+        <span class="legend-item"><span class="color-box" style="background-color:var(--level-2)"></span> 轉乘：曾在此站轉乘</span>
+        <span class="legend-item"><span class="color-box" style="background-color:var(--level-3)"></span> 造訪過：曾出站造訪</span>
+        <span class="legend-item"><span class="color-box" style="background-color:var(--level-4)"></span> 通勤節點：經常使用的站點</span>
+        <span class="legend-item"><span class="color-box" style="background-color:var(--level-5)"></span> 居住過：曾在該站附近居住</span>
+      </div>
       <svg id="metro-svg" viewBox="0 0 650 500"></svg>
     </div>
     <div style="text-align:center; color:#888; font-size:0.98em;">
-      <p>Tap a station to set your level!<br>Data is saved automatically.</p>
+      <p>點擊車站來設定您的等級！<br>數據將自動在本機保存。<button id="restart">重新開始</button></p>
     </div>
   </main>
   <div id="level-menu" class="level-menu"></div>
+<script src="https://unpkg.com/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
 <script src="script.js" type="module"></script>
 </body>
 </html>

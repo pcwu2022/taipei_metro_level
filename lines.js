@@ -19,7 +19,7 @@ export const LINES = [
                 "id": "R26",
                 "name": "竹圍",
                 "x": 163,
-                "y": 339
+                "y": 296
             },
             {
                 "id": "R25",

@@ -2,22 +2,22 @@
 import { LINES } from './lines.js';
 
 const LEVELS = [
-  { value: 0, label: 'None', color: 'var(--level-0)' },
-  { value: 1, label: 'Passed', color: 'var(--level-1)' },
-  { value: 2, label: 'Transfer', color: 'var(--level-2)' },
-  { value: 3, label: 'Visited', color: 'var(--level-3)' },
-  { value: 4, label: 'Commute node', color: 'var(--level-4)' },
-  { value: 5, label: 'Lived nearby', color: 'var(--level-5)' },
+  { value: 0, label: '無', color: 'var(--level-0)' },
+  { value: 1, label: '通過', color: 'var(--level-1)' },
+  { value: 2, label: '轉乘', color: 'var(--level-2)' },
+  { value: 3, label: '造訪過', color: 'var(--level-3)' },
+  { value: 4, label: '通勤節點', color: 'var(--level-4)' },
+  { value: 5, label: '居住過', color: 'var(--level-5)' },
 ];
 
-const circleRadius = 5;
-const strokeWeight = 6;
+const circleRadius = 8;
+const strokeWeight = 7;
 const labelSize = 'small';
 
-const ax = 0.4;
-const bx = 30;
-const ay = 0.4;
-const by = -60;
+const ax = 0.6;
+const bx = -40;
+const ay = 0.6;
+const by = -90;
 
 // size
 for (let line of LINES) {
@@ -67,7 +67,7 @@ function renderMap() {
     for (const s of line.stations) {
       if (s.x == null || s.y == null) continue;
       svg.appendChild(stationElement(s));
-      svg.appendChild(labelElement(s));
+      // svg.appendChild(labelElement(s)); // Remove label from map
     }
   }
 }
@@ -102,14 +102,7 @@ function stationElement(station) {
   g.appendChild(c);
   return g;
 }
-function labelElement(station) {
-  const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  t.setAttribute('x', station.x);
-  t.setAttribute('y', station.y + 28);
-  t.setAttribute('class', 'station-label');
-  t.textContent = station.name;
-  return t;
-}
+// Remove labelElement function if not used elsewhere, or leave as is if you want to keep it for future use
 
 // --- Level Menu ---
 const levelMenu = document.getElementById('level-menu');
@@ -123,6 +116,15 @@ function onStationClick(e, station) {
 }
 function showLevelMenu(e, station) {
   levelMenu.innerHTML = '';
+  // Add station name label at the top of the menu
+  const labelDiv = document.createElement('div');
+  labelDiv.textContent = station.name;
+  labelDiv.style.fontWeight = 'bold';
+  labelDiv.style.fontSize = '1.08em';
+  labelDiv.style.padding = '0.3em 1.2em 0.5em 1.2em';
+  labelDiv.style.textAlign = 'left';
+  levelMenu.appendChild(labelDiv);
+
   const current = stationLevels[station.id] || 0;
   LEVELS.forEach(lvl => {
     const btn = document.createElement('button');
@@ -137,16 +139,27 @@ function showLevelMenu(e, station) {
     };
     levelMenu.appendChild(btn);
   });
-  // Position menu
-  const svg = document.getElementById('metro-svg');
-  const rect = svg.getBoundingClientRect();
-  let x = station.x * (rect.width / svg.viewBox.baseVal.width);
-  let y = station.y * (rect.height / svg.viewBox.baseVal.height);
-  levelMenu.style.left = (rect.left + x - 70) + 'px';
-  levelMenu.style.top = (rect.top + y + 10 + window.scrollY) + 'px';
   levelMenu.style.display = 'flex';
+  levelMenu.style.flexDirection = 'column';
+  levelMenu.style.position = 'absolute';
+  levelMenu.style.zIndex = '1000';
   menuOpen = true;
+
+  // Only set position once, at click/tap
+  let clientX = e.clientX, clientY = e.clientY;
+  if (e.touches && e.touches.length > 0) {
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  }
+  moveLevelMenu(clientX, clientY);
 }
+
+function moveLevelMenu(x, y) {
+  // Offset so menu doesn't cover cursor
+  levelMenu.style.left = (x + 16) + 'px';
+  levelMenu.style.top = (y + 16 + window.scrollY) + 'px';
+}
+
 function hideLevelMenu() {
   levelMenu.style.display = 'none';
   menuOpen = false;
@@ -159,7 +172,7 @@ window.addEventListener('resize', hideLevelMenu);
 
 // --- Total Level ---
 function updateTotalLevel() {
-  document.getElementById('total-level').textContent = 'Total Level: ' + getTotalLevel();
+  document.getElementById('total-level').textContent = '總等級：' + getTotalLevel();
 }
 
 // --- Init ---
@@ -170,4 +183,17 @@ updateTotalLevel();
 // --- Accessibility: Keyboard navigation ---
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && menuOpen) hideLevelMenu();
+});
+
+svgPanZoom('#metro-svg', {
+  viewportSelector: '.svg-pan-zoom_viewport'
+});
+
+const restartButton = document.getElementById("restart");
+
+restartButton.addEventListener("click", (e) => {
+  if (confirm("確定重設所有的等級嗎？")) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({}));
+    location.reload();
+  }
 });

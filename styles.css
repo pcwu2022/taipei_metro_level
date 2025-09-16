@@ -4,17 +4,16 @@
     --green: #008659;
     --orange: #f8b61c;
     --brown: #a05a2c;
-    --yellow: #ffd600;
+    --yellow: #fffb00;
     --purple: #a554a1;
     --light-green: #b7d900;
     --circle-size: 28px;
     --level-0: #fff;
-    --level-1: #b0bec5;
-    --level-2: #4fc3f7;
-    --level-3: #81c784;
-    --level-4: #ffd54f;
-    --level-5: #e57373;
-    --level-6: #8e24aa;
+    --level-1: #4fc3f7;
+    --level-2: #81c784;
+    --level-3: #ffd54f;
+    --level-4: #e57373;
+    --level-5: #ff0000;
     --shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 body {
@@ -33,9 +32,9 @@ header {
     box-shadow: var(--shadow);
     padding: 1.2rem 0 0.7rem 0;
     text-align: center;
-    position: sticky;
+    /* position: sticky; */
     top: 0;
-    z-index: 10;
+    z-index: 100;
 }
 h1 {
     margin: 0 0 0.2em 0;
@@ -60,17 +59,18 @@ main {
 }
 .metro-map {
     width: 100%;
-    max-width: 650px;
+    height: 600px;
     background: #fff;
     border-radius: 18px;
     box-shadow: var(--shadow);
     padding: 1.2em 0.5em 1.5em 0.5em;
     margin-bottom: 1.5em;
     overflow-x: auto;
+    position: relative; /* add this to allow absolute positioning inside */
 }
 svg {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
     margin: 0 auto;
     touch-action: none;
@@ -145,4 +145,41 @@ svg {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: none; }
+}
+.level-legend {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.2em;
+    margin: 0;
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 0.4em 0.7em;
+    z-index: 20;
+    font-size: 0.82em;
+    min-width: 0;
+    max-width: 180px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0.1em 0;
+    white-space: nowrap;
+    font-size: 1em;
+}
+
+.color-box {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.4em;
+    border: 1.2px solid #bbb;
 }
