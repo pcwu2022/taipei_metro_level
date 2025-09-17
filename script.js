@@ -84,12 +84,22 @@ function lineElement(x1, y1, x2, y2, color) {
   return l;
 }
 
+const displayedStations = [];
+
 function stationElement(station) {
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
   c.setAttribute('cx', station.x);
   c.setAttribute('cy', station.y);
-  c.setAttribute('r', circleRadius);
+  const xy = Math.floor(station.x * 10000 + station.y);
+  if (displayedStations.indexOf(xy) !== -1) {
+    c.setAttribute('r', 0);
+    // console.log(station.id);
+  } else {
+    c.setAttribute('r', circleRadius);
+    displayedStations.push(xy);
+    // console.log(xy);
+  }
   c.setAttribute('class', 'station' + (stationLevels[station.id] ? ' selected' : ''));
   const level = stationLevels[station.id] || 0;
   c.setAttribute('fill', LEVELS[level]?.color || LEVELS[0].color);
