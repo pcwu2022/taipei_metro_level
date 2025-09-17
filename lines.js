@@ -1,5 +1,45 @@
 export const LINES = [
     {
+        "name": "新北投支線",
+        "color": "var(--pink)",
+        "stations": [
+            {
+                "id": "R22",
+                "name": "北投",
+                "x": 298,
+                "y": 366,
+                "transfer": [
+                    "R",
+                    "P"
+                ]
+            },
+            {
+                "id": "R22A",
+                "name": "新北投",
+                "x": 333,
+                "y": 328
+            },
+        ]
+    },
+    {
+        "name": "小碧潭支線",
+        "color": "var(--light-green)",
+        "stations": [
+            {
+                "id": "G03",
+                "name": "七張",
+                "x": 542,
+                "y": 1223
+            },
+            {
+                "id": "G03A",
+                "name": "小碧潭",
+                "x": 489,
+                "y": 1223
+            },
+        ]
+    },
+    {
         "name": "淡水信義線",
         "color": "var(--red)",
         "stations": [
@@ -138,7 +178,7 @@ export const LINES = [
                 "id": "R09",
                 "name": "台大醫院",
                 "x": 408,
-                "y": 942
+                "y": 906
             },
             {
                 "id": "R08",
