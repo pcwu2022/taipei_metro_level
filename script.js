@@ -212,3 +212,18 @@ restartButton.addEventListener("click", (e) => {
     location.reload();
   }
 });
+
+const presetButton = document.getElementById("preset");
+
+presetButton.addEventListener("click", (e) => {
+  if (confirm("確定將所有車站設定為「造訪過」嗎？")) {
+    const allLevels = {};
+    for (const line of LINES) {
+      for (const station of line.stations) {
+        allLevels[station.id] = 3; // Set to "造訪過"
+      }
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allLevels));
+    location.reload();
+  }
+});
