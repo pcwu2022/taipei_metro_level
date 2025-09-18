@@ -109,6 +109,12 @@ function stationElement(station) {
   c.setAttribute('aria-label', station.name);
   c.addEventListener('click', (e) => onStationClick(e, station));
   c.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') onStationClick(e, station); });
+  // Add touch event for mobile support
+  c.addEventListener('touchstart', (e) => {
+    // Prevent simulated mouse events and scrolling
+    e.preventDefault();
+    onStationClick(e, station);
+  }, { passive: false });
   g.appendChild(c);
   return g;
 }
